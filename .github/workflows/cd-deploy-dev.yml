@@ -1,0 +1,67 @@
+name: deploy to aks 
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - 'master'
+
+jobs:
+  build: 
+    uses: ./.github/workflows/CI-java-build-package-maven.yml
+    secrets: inherit
+  deploy-dev:
+    
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_HUB_USERNAME: sriharipriya # name of Docker Hub ID
+      IMAGE_NAME: serviceB-poc
+      IMAGE_TAG: ${{ github.run_number }}
+      
+      CLUSTER_NAME: myAKSCluster
+      RESOURSE_GROUP: myAKSRG
+    needs: [build]
+    environment: dev
+    steps:
+      - name: Display the path
+        run: pwd
+        shell: bash
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: mywebapp-artifact
+          path: ${{github.workspace}}
+         
+
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
+          
+    
+
+        # Set the target AKS cluster..
+      - name: Deploy to AKS
+        uses: Azure/aks-set-context@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          cluster-name: myAKSCluster
+          resource-group: myAKSRG
+      
+      - name: Apply Kubernetes deployment
+        uses: Azure/k8s-deploy@v1
+        with:
+          namespace: dev
+          manifests: |
+            kubernetes/deployment.yml
+          images: |
+            sriharipriya/microservices-poc:${{ github.run_number }}
+            
+ 

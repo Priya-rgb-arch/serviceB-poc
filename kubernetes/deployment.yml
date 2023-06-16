@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment-serviceB
+  name: deployment-serviceb
   labels:
-    app: serviceB-poc
+    app: serviceb-poc
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: serviceB-poc
+      app: serviceb-poc
   template:
     metadata:
       labels:
-        app: serviceB-poc
+        app: serviceb-poc
     spec:
       containers:
-        - name: serviceB-poc
+        - name: serviceb-poc
           image: sriharipriya/serviceb-poc:${{ github.run_number }}
 
           ports: 
@@ -24,13 +24,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: serviceB-poc-loadbalancer-service
+  name: serviceb-poc-loadbalancer-service
   labels:
-    app: serviceB-poc
+    app: serviceb-poc
 spec:
   type: LoadBalancer
   selector:
-    app: serviceB-poc
+    app: serviceb-poc
   ports:
     - port: 8081
       targetPort: 8081

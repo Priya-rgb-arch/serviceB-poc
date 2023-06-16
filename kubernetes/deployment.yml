@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: serviceB-poc
-          image: sriharipriya/serviceB-poc:${{ github.run_number }}
+          image: sriharipriya/serviceb-poc:${{ github.run_number }}
 
           ports: 
             - containerPort: 8081

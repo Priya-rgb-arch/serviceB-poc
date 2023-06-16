@@ -42,7 +42,7 @@ steps:
   displayName: docker build and publish 
   inputs:
     containerRegistry: 'docker'
-    repository: 'sriharipriya / springOauthRepo'
+    repository: 'sriharipriya / serviceB-poc'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile' 
 

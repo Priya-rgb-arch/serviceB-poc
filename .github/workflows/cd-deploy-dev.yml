@@ -17,8 +17,8 @@ jobs:
       IMAGE_NAME: serviceb-poc
       IMAGE_TAG: ${{ github.run_number }}
       
-      CLUSTER_NAME: mynewAKSCluster
-      RESOURSE_GROUP: mynewAKSRG
+      CLUSTER_NAME: myAKSCluster
+      RESOURSE_GROUP: myResourceGroup
     needs: [build]
     environment: dev
     steps:
@@ -52,8 +52,8 @@ jobs:
         uses: Azure/aks-set-context@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          cluster-name: mynewAKSCluster
-          resource-group: mynewAKSRG
+          cluster-name: myAKSCluster
+          resource-group: myResourceGroup
       
       - name: Apply Kubernetes deployment
         uses: Azure/k8s-deploy@v1

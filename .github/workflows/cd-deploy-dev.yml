@@ -31,7 +31,7 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v2
         with:
-          name: mywebapp-artifact
+          name: DockerImgB-artifact
           path: ${{github.workspace}}
          
 
